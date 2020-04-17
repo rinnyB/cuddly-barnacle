@@ -96,3 +96,49 @@ bmiTell weight height
     | bmi <= 30.0 = "Overweight!"
     | otherwise = "Go see a doctor!"
     where bmi = weight / height ^ 2
+
+
+
+-- pattern matching with where
+initials :: String -> String -> String
+initials fname lname = [f] ++ ". " ++ [l] ++ "."
+    where (f:_) = fname
+          (l:_) = lname 
+
+
+-- functions in where blocks
+
+calcBmis :: [(Double, Double)] -> [Double]
+calcBmis xs = [bmi w h | (w, h) <- xs]
+    where bmi weight height = weight / height ^ 2
+
+
+
+cylinder :: Double -> Double -> Double
+cylinder r h =
+    let sideArea = 2 * pi * r * h
+        topArea = pi * r ^ 2
+    in sideArea + 2 * topArea
+
+-- (let (a, b, c) = (1, 2, 3) in a + b + c) * 100
+
+calcBmis' :: [(Double, Double)] -> [Double]
+calcBmis' xs = [bmi | (w, h) <- xs, let bmi = w / h ^ 2]
+
+
+head'' :: [a] -> a
+head'' xs = case xs of [] -> error "No head for an empty list"
+                       (x: _) -> x
+
+
+describeList :: [a] -> String
+describeList xs = "The list is " ++ prop
+    where prop = case xs of []    -> "empty."
+                            [x]   -> "made of a single element."
+                            (x:_) -> "approximately 7 miles!"
+
+describeList' :: [a] -> String
+describeList' xs = "The list is " ++ what xs
+    where what []    = "empty."
+          what [x]   = "made of a single element."
+          what (x:_) = "approximately 7 miles!"
